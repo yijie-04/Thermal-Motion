@@ -1,4 +1,3 @@
-
 from scipy.optimize import curve_fit
 from scipy.stats import rayleigh
 import numpy as np
@@ -16,6 +15,10 @@ def distance_travel(x1, y1, x2, y2):
     dx = conv*dx
     dy = conv*dy
     return (dx**2 + dy**2)**0.5
+    
+def rayleigh(r, D):
+   t = 0.5 #using t = 60s/120 = 0.5s
+   return (r / (2*D*t)) * np.exp(-(r**2)/(4*D*t))
 
 
 file_names = ["bead1.txt", "bead2.txt", "bead3.txt", "bead4.txt",
@@ -38,19 +41,10 @@ plt.figure(3)
 plt.subplot(2, 1, 1)
 plt.hist(d, bins=num, density=True, color = "#1f77b4", ec="black", lw=1)
 
-
-'''
-3. Distribution fitting using Scipy curve_fit()function
-'''
 hist, bin = np.histogram(d, bins=num, density=True)
 start = (bin[0] + bin[1]) / 2
 end = (bin[-1] + bin[-2]) / 2
 bin = np.linspace(start, end, num=num)
-
-def rayleigh(r, D):
-   t = 0.5 #using t = 60s/120 = 0.5s
-   return (r / (2*D*t)) * np.exp(-(r**2)/(4*D*t))
-
 popt, pcov = curve_fit(rayleigh, bin, hist)
 plt.plot(bin, rayleigh(bin, *popt), '-', label="Best Fit Curve", color="red", lw=1.5)
 plt.legend()
@@ -92,19 +86,6 @@ percent_diff = (k_accepted - K)/k_accepted * 100
 print("\nThe percent difference is: ")
 print(percent_diff, "%")
 
-'''
-residuals = hist - rayleigh(bin, *popt)
-plt.subplot(2, 1, 2)
-plt.scatter(bin, residuals, color='black')
-plt.axhline(0, color='red', linestyle='--')
-plt.title('Residuals', fontsize = 16)
-plt.xlabel('distance [μm]', fontsize = 14)
-plt.ylabel('probablity', fontsize = 14)
-'''
-
-'''
-4. Most likely K
-'''
 max_likelihood = 0
 for elem in d:
    max_likelihood = max_likelihood + elem**2
