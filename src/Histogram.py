@@ -6,7 +6,7 @@ from pylab import loadtxt
 import math
 import matplotlib.colors as mcolors
 
-def dist(x1, y1, x2, y2):
+def dist(x1, x2, y1, y2):
     conv = 0.1155  #10^-6 m
     dx = x1-x2
     dy = y1-y2
@@ -45,7 +45,7 @@ def main():
     hist, bins = np.histogram(step_size, bins=bins, density=True)
     # Create a range of bin edges from min to max with the specified width
 
-    plt.hist(step_size, bins=bins, density=True, alpha=0.6, color='blue', edgecolor = "black")
+    plt.hist(step_size, bins=bins, density=True, alpha=0.6, color='#1f77b4', edgecolor = "black")
 
     init_guess = np.mean(step_size ** 2) / 2
     print(init_guess)
@@ -61,6 +61,6 @@ def main():
     plt.axis([0, 2, 0, 2])  # Set x-axis from 0 to 6 and y-axis from 0 to 30
 
     plt.show()
-    plt.savefig('hist.png')
+    plt.savefig("hist.png")
 
 main()
